@@ -53,6 +53,19 @@ wheels limit(wheels wh);
  */
 wheels avoid_obs(enum direction type_obs);
 
+/*
+ * @param  two float
+ * @return the minimum beetween them
+ */
+float min(float x, float y);
+
+/*
+ * Reduce wheels speed depending on the distance of obstacle
+ * @param obstacle's sensors
+ * @return wheels speed
+ */
+wheels speed(sens_obs obs);
+
 /**
  * Analyse sensors of the robot to control its trajectory
  * @return wheels speed
