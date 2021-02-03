@@ -33,6 +33,12 @@ enum direction analyse_obs(sens_obs obs){
 
 
 wheels limit(wheels wh){
+	if(wh.left > 25.0){
+		wh.left = 25.0;
+	}
+	if(wh.right > 25.0){
+		wh.right = 25.0;
+	}
 	return wh;
 }
 
@@ -60,7 +66,7 @@ wheels controler(bool gap, sens_obs obs, bool contact, bool end){
     // case simple obstacle
     // case wall
 	}
-	return wh;
+	return limit(wh);
 }
 
 
