@@ -9,23 +9,30 @@
 int init_suite(void) { return 0; }
 int clean_suite(void) { return 0; }
 
+bool compare_wheels(wheels actual, wheels expect){
+	return ((actual.left == expect.left) && (actual.right == expect.right));
+}
 
 /************* Test case functions ****************/
 void speed_obstacle(void) {
   // full speed
-	wheels wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
-  CU_ASSERT_EQUAL(wh.left,25.0);
-  CU_ASSERT_EQUAL(wh.right,25.0);
+  wheels wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(25.0,25.0)));
   // obstacle error
- /* CU_ASSERT_EQUAL(controler(false,init_sens_obs(-100.0,-100.0,-100.0,-100.0),false,false),init_wheels(0.0,0.0));
+  wh = controler(false,init_sens_obs(-100.0,-100.0,-100.0,-100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(0.0,0.0)));
   // obstacle for all 4 sensors = 20.0cm/s
-  CU_ASSERT_EQUAL(controler(false,init_sens_obs(20.0,20.0,20.0,20.0),false,false),init_wheels(25.0,25.0));
+  wh = controler(false,init_sens_obs(20.0,20.0,20.0,20.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(25.0,25.0)));
   // effect of obstacle on each sensor
-  CU_ASSERT_EQUAL(controler(false,init_sens_obs(15.0,100.0,100.0,100.0),false,false),init_wheels(15.0,15.0));
-  CU_ASSERT_EQUAL(controler(false,init_sens_obs(15.0,10.0,100.0,100.0),false,false),init_wheels(10.0,10.0));
-  CU_ASSERT_EQUAL(controler(false,init_sens_obs(15.0,10.0,5.0,100.0),false,false),init_wheels(5.0,5.0));
-  CU_ASSERT_EQUAL(controler(false,init_sens_obs(15.0,10.0,5.0,1.0),false,false),init_wheels(1.0,1.0));
-*/
+  wh = controler(false,init_sens_obs(15.0,100.0,100.0,100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(15.0,15.0)));
+  wh = controler(false,init_sens_obs(15.0,10.0,100.0,100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(10.0,10.0)));
+  wh = controler(false,init_sens_obs(15.0,10.0,5.0,100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(5.0,5.0)));
+  wh = controler(false,init_sens_obs(15.0,10.0,5.0,1.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(1.0,1.0)));
 }
 
 
