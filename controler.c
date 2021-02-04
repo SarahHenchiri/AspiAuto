@@ -1,5 +1,13 @@
 #include "controler.h"
 
+// For CUnit test
+wheels init_wheels(float left, float right){
+	wheels wh;
+	wh.left = left;
+	wh.right = right;
+	return wh;
+}
+
 // For debugging purpose in main
 sens_obs init_sens_obs(float el, float ml, float mr, float er){
 	sens_obs obs;
