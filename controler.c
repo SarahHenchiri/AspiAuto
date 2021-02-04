@@ -97,10 +97,11 @@ wheels controler(bool gap, sens_obs obs, bool contact, bool end){
 	return limit(wh);
 }
 
-
+/*
 int main(int argc, char const *argv[]){
 	wheels wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
 	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
 	wh = controler(false,init_sens_obs(10.0,100.0,100.0,100.0),false,false);
 	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
 }
+*/

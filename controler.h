@@ -18,6 +18,9 @@ typedef struct sens_obs{	// capteur d'obstacle (bord_gauche, milieu_gauche, mili
 	float edge_r;
 } sens_obs;			
 
+wheels init_wheels(float left, float right);
+sens_obs init_sens_obs(float el, float ml, float mr, float er);
+
 
 /**
  * Put opposite speed on wheels to do a U-turn according to the last move
