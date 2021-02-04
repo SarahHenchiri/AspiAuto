@@ -1,6 +1,8 @@
 #include "CUnit.h"
 #include "Basic.h"
 
+#include <stdio.h>
+
 #include "controler.h"
 
 
