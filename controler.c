@@ -36,6 +36,31 @@ wheels go_base(){
 
 
 enum direction analyse_obs(sens_obs obs){
+	int r = 0;
+	int l = 0;
+
+	// Analyse the 4 sensors
+	if (obs.edge_l <= 20.0){
+		l += 1;
+	}
+	if(obs.middle_l <= 20.0){
+		l += 1;
+	}
+	if(obs.middle_r <= 20.0){
+		r += 1;
+	}
+	if(obs.edge_r <= 20.0){
+		r += 1;
+	}
+	
+
+	if(l==2){
+		return LEFT;
+	}
+	else if(r==2){ 
+		return RIGHT;
+	}
+
 	return NONE;
 }
 
@@ -53,8 +78,14 @@ wheels limit(wheels wh){
 
 wheels avoid_obs(enum direction type_obs){
 	wheels wh;
-	wh.left = 0.0;
-	wh.right = 0.0;
+	if (type_obs == RIGHT){
+		wh.right = 15.0;
+		wh.left = -15.0;
+	}
+	else {
+		wh.right = -15.0;
+		wh.left = 15.0;
+	}
 	return wh;
 }
 
@@ -91,8 +122,10 @@ wheels controler(bool gap, sens_obs obs, bool contact, bool end){
 		wh = go_base();
 	}
 	else if(contact){
-    // case simple obstacle
-    // case wall
+		enum direction type_obs = analyse_obs(obs);
+		if(cnt_contact < 2 && type_obs != NONE){
+			wh = avoid_obs(type_obs);
+		}
 	}
 	return limit(wh);
 }
