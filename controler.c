@@ -72,6 +72,12 @@ wheels limit(wheels wh){
 	if(wh.right > 25.0){
 		wh.right = 25.0;
 	}
+	if(wh.left < -25.0){
+		wh.left = -25.0;
+	}
+	if(wh.right < -25.0){
+		wh.right = -25.0;
+	}
 	return wh;
 }
 
