@@ -32,7 +32,7 @@ void speed_obstacle(void) {
   //CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(0.0,0.0)));
   // obstacle for all 4 sensors = 20.0cm/s
   wh = controler(false,init_sens_obs(20.0,20.0,20.0,20.0),false,false);
-  //CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(25.0,25.0)));
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(20.0,20.0)));
   // effect of obstacle on each sensor
   wh = controler(false,init_sens_obs(15.0,100.0,100.0,100.0),false,false);
   CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(15.0,15.0)));
@@ -54,6 +54,32 @@ void speed_limit(void) {
   // contact detected
   wh = controler(false,init_sens_obs(100.0,100.0,1.0,1.0),true,false);
   //CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(-25.0,25.0)));
+}
+
+void wall_contact(void) {
+  // counter of contact >= 0 but no new contact
+  wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(25.0,25.0)));
+  CU_ASSERT_EQUAL(cnt_contact,0);
+  cnt_contact = 1;
+  wh = controler(false,init_sens_obs(10.0,10.0,10.0,10.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(10.0,10.0)));
+  CU_ASSERT_EQUAL(cnt_contact,1);
+  cnt_contact = 2;
+  wh = controler(false,init_sens_obs(10.0,10.0,10.0,10.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(10.0,10.0)));
+  CU_ASSERT_EQUAL(cnt_contact,2);
+  cnt_contact = 0;
+  // counter of contact >= 0 and new contact
+  wh = controler(false,init_sens_obs(1.0,1.0,20.0,20.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(15,-15)));
+  CU_ASSERT_EQUAL(cnt_contact,1);
+  wh = controler(false,init_sens_obs(1.0,1.0,20.0,20.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(15,-15)));
+  CU_ASSERT_EQUAL(cnt_contact,2);
+  wh = controler(false,init_sens_obs(1.0,1.0,20.0,20.0),false,false);
+  CU_ASSERT_TRUE(compare_wheels(wh,init_wheels(25,-25)));
+  CU_ASSERT_EQUAL(cnt_contact,0);
 }
 
 /************* Test Runner Code goes here **************/
