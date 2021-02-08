@@ -169,22 +169,3 @@ wheels controler(bool gap, sens_obs obs, bool contact, bool end, int* cnt_contac
 	return limit(wh);
 }
 
-/*
-int main(int argc, char const *argv[]){
-	
-	wheels wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
-	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-	wh = controler(false,init_sens_obs(10.0,100.0,100.0,100.0),false,false);
-	
-	wheels wh = controler(false,init_sens_obs(1.0,1.0,100.0,100.0),true,false);
-	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-
-  	wh = controler(false,init_sens_obs(100.0,100.0,1.0,1.0),true,false);
-  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-
-  wh = controler(false,init_sens_obs(1.0,100.0,100.0,100.0),true,false);
-  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-  wh = controler(false,init_sens_obs(100.0,100.0,100.0,1.0),true,false);
-  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-}*/
-
