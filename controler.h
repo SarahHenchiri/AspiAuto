@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
 enum direction {NONE, RIGHT, LEFT};
 
 typedef struct wheels{
@@ -18,6 +19,7 @@ typedef struct sens_obs{	// capteur d'obstacle (bord_gauche, milieu_gauche, mili
 	float edge_r;
 } sens_obs;			
 
+void init_lastmove(enum direction mmove);
 wheels init_wheels(float left, float right);
 sens_obs init_sens_obs(float el, float ml, float mr, float er);
 
@@ -73,6 +75,6 @@ wheels speed(sens_obs obs);
  * Analyse sensors of the robot to control its trajectory
  * @return wheels speed
  */
-wheels controler(bool gap, sens_obs obs, bool contact, bool end);
+wheels controler(bool gap, sens_obs obs, bool contact, bool end, int* cnt_contact);
 
 #endif

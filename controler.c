@@ -1,5 +1,12 @@
 #include "controler.h"
 
+
+
+enum direction last_move = RIGHT;		// save the last move for u-turn
+
+void init_lastmove(enum direction move){
+	last_move=move;
+}
 // For CUnit test
 wheels init_wheels(float left, float right){
 	wheels wh;
@@ -21,8 +28,16 @@ sens_obs init_sens_obs(float el, float ml, float mr, float er){
 
 wheels u_turn(){ 
 	wheels wh;
-	wh.left = 0.0;
-	wh.right = 0.0;
+	if(last_move == LEFT){
+		wh.right = 25.0;
+		wh.left = -25.0;
+		last_move = RIGHT;
+	}
+	else {
+		wh.right = -25.0;
+		wh.left = 25.0;
+		last_move = LEFT;
+	}
 	return wh;
 }
 
@@ -109,38 +124,67 @@ wheels speed(sens_obs obs){
 	wh.left = 25;
 	wh.right = 25;
 
-	if (obs.edge_l <= 20.0 || obs.middle_l <= 20.0 || obs.edge_r <= 20.0 || obs.middle_r <= 20.0){
+	if (obs.edge_l <= 0.0 || obs.middle_l <= 0.0 || obs.edge_r <= 0.0 || obs.middle_r <= 0.0){
+		wh.left = 0;
+		wh.right = 0;
+	}
+
+	else if (obs.edge_l <= 20.0 || obs.middle_l <= 20.0 || obs.edge_r <= 20.0 || obs.middle_r <= 20.0){
 		wh.left = min(min(obs.edge_l, obs.middle_l), min(obs.edge_r, obs.middle_r));
 		wh.right = min(min(obs.edge_l, obs.middle_l), min(obs.edge_r, obs.middle_r));
 	}
+
 	
 	return wh;
 }
 
 
-wheels controler(bool gap, sens_obs obs, bool contact, bool end){
+wheels controler(bool gap, sens_obs obs, bool contact, bool end, int* cnt_contact){
 	wheels wh = speed(obs);
 	
 	if(gap){
 		wh = u_turn();
+		*cnt_contact = 0;
 	}
 	else if(end){
 		wh = go_base();
+		*cnt_contact = 0;
 	}
 	else if(contact){
+		*cnt_contact = (*cnt_contact) + 1;
 		enum direction type_obs = analyse_obs(obs);
-		if(cnt_contact < 2 && type_obs != NONE){
+		if(*cnt_contact < 3 && type_obs != NONE){
 			wh = avoid_obs(type_obs);
 		}
+		else if(*cnt_contact==3){
+			wh = u_turn();
+			*cnt_contact = 0;
+
+		}
 	}
+	else{
+		*cnt_contact = 0;
+	}
+
 	return limit(wh);
 }
 
 /*
 int main(int argc, char const *argv[]){
+	
 	wheels wh = controler(false,init_sens_obs(100.0,100.0,100.0,100.0),false,false);
 	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
 	wh = controler(false,init_sens_obs(10.0,100.0,100.0,100.0),false,false);
+	
+	wheels wh = controler(false,init_sens_obs(1.0,1.0,100.0,100.0),true,false);
 	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
-}
-*/
+
+  	wh = controler(false,init_sens_obs(100.0,100.0,1.0,1.0),true,false);
+  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
+
+  wh = controler(false,init_sens_obs(1.0,100.0,100.0,100.0),true,false);
+  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
+  wh = controler(false,init_sens_obs(100.0,100.0,100.0,1.0),true,false);
+  	printf("left speed = %f; right speed = %f\n",wh.left,wh.right);
+}*/
+
