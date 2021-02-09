@@ -1,5 +1,7 @@
 #include "CUnit.h"
 #include "Automated.h"
+#include "Basic.h"
+
 
 #include <stdio.h>
 
